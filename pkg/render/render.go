@@ -2,12 +2,12 @@ package render
 
 import (
 	"bytes"
-	"github.com/rubutar/web_booking_byGO/pkg/config"
-	"github.com/rubutar/web_booking_byGO/pkg/models"
 	"html/template"
 	"log"
 	"net/http"
 	"path/filepath"
+	"web_booking_byGO/pkg/config"
+	"web_booking_byGO/pkg/models"
 )
 
 var app *config.AppConfig

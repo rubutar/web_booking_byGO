@@ -3,9 +3,9 @@ package main
 import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"github.com/rubutar/web_booking_byGO/pkg/config"
-	"github.com/rubutar/web_booking_byGO/pkg/handler"
 	"net/http"
+	"web_booking_byGO/pkg/config"
+	"web_booking_byGO/pkg/handler"
 )
 
 func routes(app *config.AppConfig) http.Handler {
@@ -18,6 +18,7 @@ func routes(app *config.AppConfig) http.Handler {
 
 	mux.Use(middleware.Recoverer)
 	mux.Use(NoSurf)
+	mux.Use(SessionLoan)
 
 	mux.Get("/", handler.Repo.Home)
 	mux.Get("/about", handler.Repo.About)
