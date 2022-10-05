@@ -2,28 +2,43 @@ package render
 
 import (
 	"bytes"
+	"github.com/rubutar/web_booking_byGO/pkg/config"
+	"github.com/rubutar/web_booking_byGO/pkg/models"
 	"html/template"
 	"log"
 	"net/http"
 	"path/filepath"
 )
 
-func RenderTemplate(w http.ResponseWriter, tmpl string) {
-	//get the template cache from the app config
+var app *config.AppConfig
 
-	tc, err := CreateTemplateCache()
-	if err != nil {
-		log.Fatal(err)
+// NewTemplates sets the config for the template package
+func NewTemplates(a *config.AppConfig) {
+	app = a
+}
+
+func AddDefaultData(td *models.TemplateData) *models.TemplateData {
+
+	return td
+}
+
+func RenderTemplate(w http.ResponseWriter, tmpl string, td *models.TemplateData) {
+	var tc map[string]*template.Template
+
+	if app.UseCache {
+		tc = app.TemplateCache
+	} else {
+		tc, _ = CreateTemplateCache()
 	}
 
-	//get requested template from cache
 	t, ok := tc[tmpl]
 	if !ok {
-		log.Fatal(err)
+		log.Fatal("could not get template from template cache")
 	}
 
 	buf := new(bytes.Buffer)
-	err = t.Execute(buf, nil)
+	err := t.Execute(buf, td)
+	td = AddDefaultData(td)
 	if err != nil {
 		log.Println(err)
 	}
@@ -70,49 +85,3 @@ func CreateTemplateCache() (map[string]*template.Template, error) {
 	return myCache, nil
 
 }
-
-//
-//var tc = make(map[string]*template.Template)
-//
-//func RenderTemplate(w http.ResponseWriter, t string) {
-//	var tmpl *template.Template
-//	var err error
-//
-//	//check to see if we already have the template in the cache
-//	_, inMap := tc[t]
-//	if !inMap {
-//		//need to create the template
-//		log.Println("creating the template and adding to cache")
-//		err = createTemplateCache(t)
-//		if err != nil {
-//			log.Println(err)
-//		}
-//	} else {
-//		//template is there
-//		log.Println("using cached template")
-//	}
-//
-//	tmpl = tc[t]
-//	err = tmpl.Execute(w, nil)
-//	if err != nil {
-//		log.Println(err)
-//	}
-//}
-//
-//func createTemplateCache(t string) error {
-//	templates := []string{
-//		fmt.Sprintf("./template/%s", t),
-//		"./template/base.layout.html",
-//	}
-//
-//	//parse the template
-//	tmpl, err := template.ParseFiles(templates...)
-//	if err != nil {
-//		return err
-//	}
-//
-//	//add template to cache
-//	tc[t] = tmpl
-//
-//	return nil
-//}
