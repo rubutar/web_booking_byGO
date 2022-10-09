@@ -46,3 +46,27 @@ func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
 		StringMap: stringMap,
 	})
 }
+func (m *Repository) Reserve(w http.ResponseWriter, r *http.Request) {
+	remoteIP := r.RemoteAddr
+	m.App.Session.Put(r.Context(), "remote_ip", remoteIP)
+
+	render.RenderTemplate(w, "reserve.page.html", &models.TemplateData{})
+}
+func (m *Repository) Vila1(w http.ResponseWriter, r *http.Request) {
+	remoteIP := r.RemoteAddr
+	m.App.Session.Put(r.Context(), "remote_ip", remoteIP)
+
+	render.RenderTemplate(w, "vila1.page.html", &models.TemplateData{})
+}
+func (m *Repository) Vila2(w http.ResponseWriter, r *http.Request) {
+	remoteIP := r.RemoteAddr
+	m.App.Session.Put(r.Context(), "remote_ip", remoteIP)
+
+	render.RenderTemplate(w, "vila2.page.html", &models.TemplateData{})
+}
+func (m *Repository) Contact(w http.ResponseWriter, r *http.Request) {
+	remoteIP := r.RemoteAddr
+	m.App.Session.Put(r.Context(), "remote_ip", remoteIP)
+
+	render.RenderTemplate(w, "contact.page.html", &models.TemplateData{})
+}

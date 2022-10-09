@@ -41,12 +41,7 @@ func main() {
 
 	render.NewTemplates(&app)
 
-	//http.HandleFunc("/", handler.Repo.Home)
-	//http.HandleFunc("/about", handler.Repo.About)
-
 	fmt.Println(fmt.Sprintf("starting application on port %s", portNumb))
-
-	//_ = http.ListenAndServe(portNumb, nil)
 
 	srv := &http.Server{
 		Addr:    portNumb,
